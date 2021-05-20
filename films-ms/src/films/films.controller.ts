@@ -1,4 +1,4 @@
-import { Body, Controller, Logger, Post } from '@nestjs/common';
+import { Body, Controller, Headers, Logger, Post } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FilmCreateDTO } from './dto/film-create.dto';
 
@@ -14,8 +14,12 @@ export class FilmsController {
     description: 'Film successfully created.',
     type: FilmCreateDTO,
   })
-  registerNewFilm(@Body() filmCreatedDto: FilmCreateDTO) {
+  registerNewFilm(
+    @Body() filmCreatedDto: FilmCreateDTO,
+    @Headers('request-id') requestId: string,
+  ) {
     this.logger.log('Received payload: ' + JSON.stringify(filmCreatedDto));
+    this.logger.log(`Request ID: ${requestId}`);
     return { ok: true };
   }
 }
