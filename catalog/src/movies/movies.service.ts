@@ -13,7 +13,9 @@ export class MoviesService {
     private readonly movieRepository: MovieRepository,
   ) {}
 
-  registerNewMovie(movieToRegister: MovieCreateDTO, requestId: string) {
-    this.kafkaService.NewMovieRegistered(movieToRegister, requestId);
+  async registerNewMovie(movieToRegister: MovieCreateDTO, requestId: string) {
+    const movie = await this.movieRepository.create(movieToRegister);
+    await movie.save();
+    this.kafkaService.NewMovieRegistered(movie, requestId);
   }
 }

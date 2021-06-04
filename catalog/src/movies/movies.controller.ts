@@ -24,13 +24,13 @@ export class MoviesController {
     description: 'Movie successfully created.',
     type: MovieCreateDTO,
   })
-  registerNewMovie(
+  async registerNewMovie(
     @Body() movieCreatedDto: MovieCreateDTO,
     @Headers('request-id') requestId: string,
   ) {
     this.logger.log('Received payload: ' + JSON.stringify(movieCreatedDto));
     this.logger.log(`Request ID: ${requestId}`);
-    this.moviesService.registerNewMovie(movieCreatedDto, requestId);
+    await this.moviesService.registerNewMovie(movieCreatedDto, requestId);
     return { ok: true };
   }
 }

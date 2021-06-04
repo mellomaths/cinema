@@ -6,7 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { MovieCreateDTO } from 'src/movies/dto/movie-create.dto';
+import { Movie } from 'src/movies/models/movie.model';
 import { KafkaMessageDTO } from './dto/kafka-message.dto';
 
 @Injectable()
@@ -41,8 +41,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     this.clientKafka.send(topic, data.stringify()).subscribe();
   }
 
-  NewMovieRegistered(data: MovieCreateDTO, requestId: string) {
-    const message = this.createKafkaMessage(data, requestId);
+  NewMovieRegistered(data: Movie, requestId: string) {
+    const message = this.createKafkaMessage(data.toJSON(), requestId);
     this.sendMessageToTopic(this.topic.NewMovieRegistered, message);
   }
 }
