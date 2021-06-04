@@ -30,5 +30,13 @@ export class Movie extends Document {
 }
 
 export const MovieSchema = SchemaFactory.createForClass(Movie);
+MovieSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+  },
+});
 
 export type MovieRepository = Model<Movie>;
