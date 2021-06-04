@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDecimal, IsInt, IsNotEmpty, IsString } from 'class-validator';
+import { IsInt, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class MovieCreateDTO {
   @IsNotEmpty()
@@ -31,7 +31,7 @@ export class MovieCreateDTO {
   @ApiProperty()
   year: number;
 
-  @IsDecimal()
+  @IsNumber()
   @ApiProperty()
   rating: number;
 }
