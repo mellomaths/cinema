@@ -1,30 +1,34 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
-
-export type MovieDocument = Movie & Document;
+import { Document, Model } from 'mongoose';
+import * as mongoose from 'mongoose';
 
 @Schema()
-export class Movie {
-  @Prop()
+export class Movie extends Document {
+  @Prop({ type: mongoose.Schema.Types.ObjectId })
+  id: string;
+
+  @Prop({ required: true })
   title: string;
 
-  @Prop()
+  @Prop({ required: true })
   plot: string;
 
-  @Prop()
+  @Prop({ required: true })
   status: string;
 
-  @Prop()
+  @Prop({ required: true })
   language: string;
 
-  @Prop()
+  @Prop({ required: true })
   category: string;
 
-  @Prop()
+  @Prop({ required: true })
   year: number;
 
-  @Prop()
+  @Prop({ required: true })
   rating: string;
 }
 
 export const MovieSchema = SchemaFactory.createForClass(Movie);
+
+export type MovieRepository = Model<Movie>;
