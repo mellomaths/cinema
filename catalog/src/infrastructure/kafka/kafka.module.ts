@@ -1,11 +1,12 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { KafkaService } from './kafka.service';
 
-@Module({ imports: [ConfigModule.forRoot()] })
+@Module({ imports: [ConfigModule.forRoot()], exports: [KafkaService] })
 export class KafkaModule {
   static register(): DynamicModule {
-    return ClientsModule.register([
+    const m = ClientsModule.register([
       {
         name: 'KAFKA_SERVICE',
         transport: Transport.KAFKA,
@@ -23,5 +24,7 @@ export class KafkaModule {
         },
       },
     ]);
+    m.exports.push(KafkaService);
+    return m;
   }
 }
