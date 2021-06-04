@@ -7,7 +7,7 @@ services:
         environment:
             MONGO_INITDB_ROOT_USERNAME: system
             MONGO_INITDB_ROOT_PASSWORD: system
-        networks:
-        - app-network  
         volumes: 
         - dbdata:/data/db
+volumes:
+    dbdata:         
