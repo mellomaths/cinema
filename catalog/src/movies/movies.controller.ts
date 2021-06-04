@@ -8,10 +8,13 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { MovieCreateDTO } from './dto/movie-create.dto';
+import { MoviesService } from './movies.service';
 
 @Controller('movies')
 export class MoviesController {
   private readonly logger = new Logger('MoviesController');
+
+  public constructor(private readonly moviesService: MoviesService) {}
 
   @Post()
   @ApiOperation({ summary: 'Register a new movie in the Cinema.' })
@@ -27,6 +30,7 @@ export class MoviesController {
   ) {
     this.logger.log('Received payload: ' + JSON.stringify(movieCreatedDto));
     this.logger.log(`Request ID: ${requestId}`);
+    this.moviesService.registerNewMovie(movieCreatedDto, requestId);
     return { ok: true };
   }
 }
