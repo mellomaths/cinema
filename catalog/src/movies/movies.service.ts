@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { KafkaService } from 'src/infrastructure/kafka/kafka.service';
 import { MovieCreateDTO } from './dto/movie-create.dto';
@@ -17,5 +17,14 @@ export class MoviesService {
     const movie = await this.movieRepository.create(movieToRegister);
     await movie.save();
     this.kafkaService.NewMovieRegistered(movie, requestId);
+  }
+
+  async findMovieById(id: string) {
+    const movie = await this.movieRepository.findById(id);
+    if (!movie) {
+      throw new NotFoundException(`Movie id=${id} was not found.`);
+    }
+
+    return movie.toJSON();
   }
 }

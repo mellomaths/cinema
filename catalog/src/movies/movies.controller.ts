@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Get,
   Headers,
   HttpStatus,
   Logger,
+  Param,
   Post,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
@@ -32,5 +34,10 @@ export class MoviesController {
     this.logger.log(`Request ID: ${requestId}`);
     await this.moviesService.registerNewMovie(movieCreatedDto, requestId);
     return { ok: true };
+  }
+
+  @Get(':id')
+  async getMovieById(@Param('id') id: string) {
+    return this.moviesService.findMovieById(id);
   }
 }
