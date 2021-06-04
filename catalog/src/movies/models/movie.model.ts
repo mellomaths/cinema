@@ -26,7 +26,7 @@ export class Movie extends Document {
   year: number;
 
   @Prop({ required: true })
-  rating: string;
+  rating: number;
 }
 
 export const MovieSchema = SchemaFactory.createForClass(Movie);
