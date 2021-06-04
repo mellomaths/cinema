@@ -37,6 +37,16 @@ export class MoviesController {
   }
 
   @Get(':id')
+  @ApiOperation({ summary: "Get Movie information by it's id." })
+  @ApiResponse({
+    status: HttpStatus.OK,
+    description: 'Movie found.',
+    type: MovieCreateDTO,
+  })
+  @ApiResponse({
+    status: HttpStatus.NOT_FOUND,
+    description: 'Movie not found.',
+  })
   async getMovieById(@Param('id') id: string) {
     return this.moviesService.findMovieById(id);
   }
