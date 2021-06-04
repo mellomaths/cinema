@@ -17,6 +17,9 @@ export class KafkaModule {
           consumer: {
             groupId: 'catalog-consumer',
           },
+          producer: {
+            allowAutoTopicCreation: true,
+          },
         },
       },
     ]);
