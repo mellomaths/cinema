@@ -1,11 +1,5 @@
-import {
-  Injectable,
-  Logger,
-  OnModuleDestroy,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { KafkaMessageDTO } from 'src/infrastructure/kafka/dto/kafka-message.dto';
 import { KafkaService } from 'src/infrastructure/kafka/kafka.service';
 import { MovieCreateDTO } from './dto/movie-create.dto';
 import { Movie, MovieRepository } from './models/movie.model';

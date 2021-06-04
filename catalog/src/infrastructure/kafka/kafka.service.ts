@@ -13,12 +13,16 @@ import { KafkaMessageDTO } from './dto/kafka-message.dto';
 export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger('KafkaService');
 
+  private readonly topic = {
+    NewMovieRegistered: process.env.KAFKA_NEW_MOVIE_REGISTERED_TOPIC,
+  };
+
   public constructor(
     @Inject('KAFKA_SERVICE') private readonly clientKafka: ClientKafka,
   ) {}
 
   async onModuleInit() {
-    this.clientKafka.subscribeToResponseOf('NewMovieRegistered');
+    this.clientKafka.subscribeToResponseOf(this.topic.NewMovieRegistered);
     await this.clientKafka.connect();
   }
 
@@ -26,12 +30,19 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     await this.clientKafka.close().catch((e) => this.logger.error(e));
   }
 
-  NewMovieRegistered(data: MovieCreateDTO, requestId: string) {
-    const message = new KafkaMessageDTO<MovieCreateDTO>();
-    message.requestId = requestId;
+  private createKafkaMessage(data: any, requestId: string) {
+    const message = new KafkaMessageDTO<any>();
     message.body = data;
-    this.clientKafka
-      .send('NewMovieRegistered', message.stringify())
-      .subscribe();
+    message.requestId = requestId;
+    return message;
+  }
+
+  private sendMessageToTopic(topic: string, data: KafkaMessageDTO<any>) {
+    this.clientKafka.send(topic, data.stringify()).subscribe();
+  }
+
+  NewMovieRegistered(data: MovieCreateDTO, requestId: string) {
+    const message = this.createKafkaMessage(data, requestId);
+    this.sendMessageToTopic(this.topic.NewMovieRegistered, message);
   }
 }
