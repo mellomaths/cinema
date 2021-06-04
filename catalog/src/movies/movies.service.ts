@@ -29,6 +29,8 @@ export class MoviesService implements OnModuleInit, OnModuleDestroy {
     const message = new KafkaMessageDTO();
     message.requestId = requestId;
     message.body = movieToRegister;
-    this.clientKafka.send('NewMovieRegistered', message).subscribe();
+    this.clientKafka
+      .send('NewMovieRegistered', JSON.stringify(message))
+      .subscribe();
   }
 }
