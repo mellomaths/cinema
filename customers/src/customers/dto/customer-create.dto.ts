@@ -39,7 +39,7 @@ export class ProfileDto {
 
   @IsObject()
   @ApiProperty()
-  profile: NotificationPreferencesDto;
+  notificationPreferences: NotificationPreferencesDto;
 }
 
 export class CustomerCreateDto {
