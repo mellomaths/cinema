@@ -13,9 +13,6 @@ export class NotificationPreferences extends Document {
 
 @Schema()
 export class Profile extends Document {
-  @Prop({ type: mongoose.Schema.Types.ObjectId })
-  id: string;
-
   @Prop({ required: true })
   name: string;
 
