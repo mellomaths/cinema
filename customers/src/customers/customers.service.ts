@@ -19,6 +19,7 @@ export class CustomersService {
   ) {
     const customer = await this.customerRepository.create(customerToRegister);
     await customer.save();
+    customer.password = undefined;
     this.kafkaService.NewCustomerRegistered(customer, requestId);
   }
 }
