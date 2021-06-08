@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsBoolean,
+  IsEmail,
+  IsMobilePhone,
   IsNotEmpty,
   IsNumber,
   IsObject,
@@ -25,11 +27,13 @@ export class ProfileDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsEmail()
   @ApiProperty()
   email: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMobilePhone()
   @ApiProperty()
   phone: string;
 
