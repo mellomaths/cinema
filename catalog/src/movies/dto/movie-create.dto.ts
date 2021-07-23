@@ -35,3 +35,10 @@ export class MovieCreateDTO {
   @ApiProperty()
   rating: number;
 }
+
+export class MovieDTO extends MovieCreateDTO {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  id: string;
+}

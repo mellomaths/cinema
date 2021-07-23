@@ -9,7 +9,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { MovieCreateDTO } from './dto/movie-create.dto';
+import { MovieCreateDTO, MovieDTO } from './dto/movie-create.dto';
 import { MoviesService } from './movies.service';
 
 @Controller('movies')
@@ -41,7 +41,7 @@ export class MoviesController {
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Movie found.',
-    type: MovieCreateDTO,
+    type: MovieDTO,
   })
   @ApiResponse({
     status: HttpStatus.NOT_FOUND,
@@ -49,5 +49,17 @@ export class MoviesController {
   })
   async getMovieById(@Param('id') id: string) {
     return this.moviesService.findMovieById(id);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Get all movies registered' })
+  @ApiResponse({
+    status: HttpStatus.CREATED,
+    description: 'Movie successfully created.',
+    type: MovieDTO,
+    isArray: true,
+  })
+  async getMovies() {
+    return this.moviesService.findMovies();
   }
 }
