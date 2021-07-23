@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import { KafkaMessageDTO } from 'src/infrastructure/kafka/dto/kafka-message.dto';
 import { KafkaService } from 'src/infrastructure/kafka/kafka.service';
+import { MovieDTO } from 'src/movies/dto/movie.dto';
 import { CustomerCreateDto } from './dto/customer-create.dto';
 import { Customer, CustomerRepository } from './models/customer.model';
 
@@ -21,5 +23,9 @@ export class CustomersService {
     await customer.save();
     customer.password = undefined;
     this.kafkaService.NewCustomerRegistered(customer, requestId);
+  }
+
+  async notifyCustomerNewMovieRegistered(message: KafkaMessageDTO<MovieDTO>) {
+    this.logger.log(message);
   }
 }
