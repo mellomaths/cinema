@@ -61,3 +61,10 @@ export class CustomerCreateDto {
   @ApiProperty()
   profile: ProfileDto;
 }
+
+export class CustomerDto extends CustomerCreateDto {
+  @IsNotEmpty()
+  @IsString()
+  @ApiProperty()
+  id: string;
+}

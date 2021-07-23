@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiBody, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CustomersService } from './customers.service';
-import { CustomerCreateDto } from './dto/customer-create.dto';
+import { CustomerCreateDto, CustomerDto } from './dto/customer-create.dto';
 
 @Controller('customers')
 export class CustomersController {
@@ -21,7 +21,7 @@ export class CustomersController {
   @ApiResponse({
     status: HttpStatus.CREATED,
     description: 'Customer successfully created.',
-    type: CustomerCreateDto,
+    type: CustomerDto,
   })
   async registerNewCostumer(
     @Body() customerCreatedDto: CustomerCreateDto,
