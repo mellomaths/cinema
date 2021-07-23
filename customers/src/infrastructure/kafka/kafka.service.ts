@@ -6,6 +6,10 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import {
+  EmailNotificationDto,
+  PushNotificationsDto,
+} from 'src/customers/dto/customer-notification.dto';
 import { Customer } from 'src/customers/models/customer.model';
 import { KafkaMessageDTO } from './dto/kafka-message.dto';
 
@@ -15,6 +19,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   private readonly topic = {
     NewCustomerRegistered: process.env.KAFKA_NEW_CUSTOMER_REGISTERED_TOPIC,
+    SendEmail: process.env.KAFKA_SEND_EMAIL_TOPIC,
+    SendPushNotification: process.env.KAFKA_SEND_PUSH_NOTIFICATION_TOPIC,
   };
 
   public constructor(
@@ -23,6 +29,8 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     this.clientKafka.subscribeToResponseOf(this.topic.NewCustomerRegistered);
+    this.clientKafka.subscribeToResponseOf(this.topic.SendEmail);
+    this.clientKafka.subscribeToResponseOf(this.topic.SendPushNotification);
     await this.clientKafka.connect();
   }
 
@@ -44,5 +52,15 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   NewCustomerRegistered(data: Customer, requestId: string) {
     const message = this.createKafkaMessage(data.toJSON(), requestId);
     this.sendMessageToTopic(this.topic.NewCustomerRegistered, message);
+  }
+
+  SendEmail(data: EmailNotificationDto, requestId: string) {
+    const message = this.createKafkaMessage(data, requestId);
+    this.sendMessageToTopic(this.topic.SendEmail, message);
+  }
+
+  SendPushNotification(data: PushNotificationsDto, requestId: string) {
+    const message = this.createKafkaMessage(data, requestId);
+    this.sendMessageToTopic(this.topic.SendPushNotification, message);
   }
 }

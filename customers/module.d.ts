@@ -5,5 +5,7 @@ declare namespace NodeJS {
     KAFKA_BROKERS: string;
 
     KAFKA_NEW_CUSTOMER_REGISTERED_TOPIC: string;
+    KAFKA_SEND_EMAIL_TOPIC: string;
+    KAFKA_SEND_PUSH_NOTIFICATION_TOPIC: string;
   }
 }
