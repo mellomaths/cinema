@@ -35,6 +35,9 @@ export class CustomersService {
     customerToRegister: CustomerCreateDto,
     requestId: string,
   ) {
+    this.logger.log(
+      `For Request ID ${requestId} Registering customer ${customerToRegister.username}.`,
+    );
     const customer = await this.customerRepository.create(customerToRegister);
     await customer.save();
     customer.password = undefined;
