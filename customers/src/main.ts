@@ -13,9 +13,9 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()
-    .setTitle('API Catalog')
+    .setTitle('API Customers')
     .setDescription(
-      'This service provides operations to register Movies, TV Shows, Animes into the Cinema catalog.',
+      'This service provides operations to register Customers into the Cinema.',
     )
     .setVersion('1.0')
     .build();
