@@ -8,6 +8,6 @@ import { MediaMongooseModule } from './models/media.model';
   imports: [KafkaModule.register(), MediaMongooseModule.register()],
   controllers: [MediasController],
   providers: [MediasService],
-  exports: [MediaMongooseModule.register()],
+  exports: [MediaMongooseModule.register(), MediasService],
 })
 export class MediasModule {}

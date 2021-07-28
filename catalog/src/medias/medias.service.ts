@@ -36,9 +36,9 @@ export class MediasService {
     return media.toJSON();
   }
 
-  async findMedias(): Promise<MediaDTO[]> {
+  async findMedias(type: string): Promise<MediaDTO[]> {
     this.logger.log(`Searching all medias registered.`);
-    const medias = await this.mediasRepository.find();
+    const medias = await this.mediasRepository.find({ type });
     return medias.map((media) => media.toJSON());
   }
 }
