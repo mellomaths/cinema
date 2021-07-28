@@ -11,7 +11,7 @@ import {
 export enum MediaType {
   MOVIE,
   ANIME,
-  TV_SHOWS,
+  TV_SHOW,
 }
 
 export enum CategoryType {
