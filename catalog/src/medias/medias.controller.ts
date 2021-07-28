@@ -59,8 +59,8 @@ export class MediasController {
   @Get()
   @ApiOperation({ summary: 'Get all medias registered.' })
   @ApiResponse({
-    status: HttpStatus.CREATED,
-    description: 'Media successfully created.',
+    status: HttpStatus.OK,
+    description: 'List of medias retrieved.',
     type: MediaDTO,
     isArray: true,
   })

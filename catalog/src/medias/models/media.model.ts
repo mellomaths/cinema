@@ -1,6 +1,7 @@
-import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { MongooseModule, Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import * as mongoose from 'mongoose';
+import { DynamicModule } from '@nestjs/common';
 
 @Schema()
 export class Media extends Document {
@@ -43,3 +44,11 @@ MediaSchema.set('toJSON', {
 });
 
 export type MediaRepository = Model<Media>;
+
+export class MediaMongooseModule {
+  static register(): DynamicModule {
+    return MongooseModule.forFeature([
+      { name: Media.name, schema: MediaSchema },
+    ]);
+  }
+}

@@ -1,16 +1,13 @@
 import { Module } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
 import { KafkaModule } from 'src/infrastructure/kafka/kafka.module';
 import { MediasController } from './medias.controller';
 import { MediasService } from './medias.service';
-import { Media, MediaSchema } from './models/media.model';
+import { MediaMongooseModule } from './models/media.model';
 
 @Module({
-  imports: [
-    KafkaModule.register(),
-    MongooseModule.forFeature([{ name: Media.name, schema: MediaSchema }]),
-  ],
+  imports: [KafkaModule.register(), MediaMongooseModule.register()],
   controllers: [MediasController],
   providers: [MediasService],
+  exports: [MediaMongooseModule.register()],
 })
 export class MediasModule {}
