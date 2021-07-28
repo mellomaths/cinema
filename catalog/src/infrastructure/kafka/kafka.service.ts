@@ -6,7 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
-import { Movie } from 'src/movies/models/movie.model';
+import { Media } from 'src/medias/models/media.model';
 import { KafkaMessageDTO } from './dto/kafka-message.dto';
 
 @Injectable()
@@ -14,7 +14,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   private readonly logger = new Logger('KafkaService');
 
   private readonly topic = {
-    NewMovieRegistered: process.env.KAFKA_NEW_MOVIE_REGISTERED_TOPIC,
+    NewMediaRegistered: process.env.KAFKA_NEW_MEDIA_REGISTERED_TOPIC,
   };
 
   public constructor(
@@ -22,7 +22,7 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   ) {}
 
   async onModuleInit() {
-    this.clientKafka.subscribeToResponseOf(this.topic.NewMovieRegistered);
+    this.clientKafka.subscribeToResponseOf(this.topic.NewMediaRegistered);
     await this.clientKafka.connect();
   }
 
@@ -41,8 +41,12 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
     this.clientKafka.send(topic, data.stringify()).subscribe();
   }
 
-  NewMovieRegistered(data: Movie, requestId: string) {
+  NewMediaRegistered(data: Media, requestId: string) {
+    const topic = this.topic.NewMediaRegistered;
+    this.logger.log(
+      `Sending message from Request ID ${requestId} to Topic ${topic}.`,
+    );
     const message = this.createKafkaMessage(data.toJSON(), requestId);
-    this.sendMessageToTopic(this.topic.NewMovieRegistered, message);
+    this.sendMessageToTopic(topic, message);
   }
 }

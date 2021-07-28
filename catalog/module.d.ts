@@ -4,6 +4,6 @@ declare namespace NodeJS {
     MONGO_URI: string;
     KAFKA_BROKERS: string;
 
-    KAFKA_NEW_MOVIE_REGISTERED_TOPIC: string;
+    KAFKA_NEW_MEDIA_REGISTERED_TOPIC: string;
   }
 }

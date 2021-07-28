@@ -3,9 +3,12 @@ import { Document, Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 @Schema()
-export class Movie extends Document {
+export class Media extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
   id: string;
+
+  @Prop({ required: true })
+  type: string;
 
   @Prop({ required: true })
   title: string;
@@ -20,7 +23,7 @@ export class Movie extends Document {
   language: string;
 
   @Prop({ required: true })
-  category: string;
+  category: string[];
 
   @Prop({ required: true })
   year: number;
@@ -29,8 +32,8 @@ export class Movie extends Document {
   rating: number;
 }
 
-export const MovieSchema = SchemaFactory.createForClass(Movie);
-MovieSchema.set('toJSON', {
+export const MediaSchema = SchemaFactory.createForClass(Media);
+MediaSchema.set('toJSON', {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
@@ -39,4 +42,4 @@ MovieSchema.set('toJSON', {
   },
 });
 
-export type MovieRepository = Model<Movie>;
+export type MediaRepository = Model<Media>;
