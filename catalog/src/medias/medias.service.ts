@@ -19,10 +19,10 @@ export class MediasService {
     requestId: string,
   ): Promise<void> {
     const media = await this.mediasRepository.create(mediaToRegister);
-    this.logger.log(
-      `Registering media ${media.title} of type ${media.type} with id=${media.id}`,
-    );
     await media.save();
+    this.logger.log(
+      `Registering media ${media.title} of type ${media.type} with id=${media._id}`,
+    );
     this.kafkaService.NewMediaRegistered(media, requestId);
   }
 
