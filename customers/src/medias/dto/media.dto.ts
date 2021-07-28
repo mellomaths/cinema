@@ -1,5 +1,6 @@
-export class MovieDTO {
+export class MediaDTO {
   id: string;
+  type: string;
   title: string;
   plot: string;
   status: string;

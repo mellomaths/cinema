@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { KafkaMessageDTO } from 'src/infrastructure/kafka/dto/kafka-message.dto';
 import { KafkaService } from 'src/infrastructure/kafka/kafka.service';
-import { MovieDTO } from 'src/movies/dto/movie.dto';
+import { MediaDTO } from 'src/medias/dto/media.dto';
 import {
   PushNotificationsDto,
   EmailNotificationDto,
@@ -22,11 +22,16 @@ export abstract class CustomerNotifier {
     this.kafkaService = kafkaService;
   }
 
-  abstract execute(message: KafkaMessageDTO<MovieDTO>): Promise<void>;
+  abstract execute(message: KafkaMessageDTO<MediaDTO>): Promise<void>;
+
+  createNotificationMessage(message: KafkaMessageDTO<MediaDTO>): string {
+    const { title, type } = message.body;
+    return `${type}: ${title} is now available in the Cinema!`;
+  }
 }
 
 export class PushNotificationCustomerNotifier extends CustomerNotifier {
-  async execute(message: KafkaMessageDTO<MovieDTO>) {
+  async execute(message: KafkaMessageDTO<MediaDTO>) {
     const customers = await this.customerRepository.find({
       'profile.notificationPreferences.pushNotifications': true,
     });
@@ -36,7 +41,7 @@ export class PushNotificationCustomerNotifier extends CustomerNotifier {
     customers.forEach((customer) => {
       const notification: PushNotificationsDto = {
         icon: '',
-        message: `${message.body.title} is now available in the Cinema!`,
+        message: this.createNotificationMessage(message),
         phone: customer.profile.phone,
       };
       this.kafkaService.SendPushNotification(notification, message.requestId);
@@ -45,7 +50,7 @@ export class PushNotificationCustomerNotifier extends CustomerNotifier {
 }
 
 export class EmailCustomerNotifier extends CustomerNotifier {
-  async execute(message: KafkaMessageDTO<MovieDTO>) {
+  async execute(message: KafkaMessageDTO<MediaDTO>) {
     const customers = await this.customerRepository.find({
       'profile.notificationPreferences.email': true,
     });
@@ -53,7 +58,7 @@ export class EmailCustomerNotifier extends CustomerNotifier {
     customers.forEach((customer) => {
       const email: EmailNotificationDto = {
         to: customer.profile.email,
-        subject: `${message.body.title} is now available in the Cinema!`,
+        subject: this.createNotificationMessage(message),
         body: '',
       };
       this.kafkaService.SendEmail(email, message.requestId);
