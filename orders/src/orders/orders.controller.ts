@@ -32,5 +32,6 @@ export class OrdersController {
       `Received request for order purchase with Request ID ${requestId}`,
     );
     this.logger.log(`Received body: ${JSON.stringify(orderCreateDto)}`);
+    this.ordersService.registerNewOrder(orderCreateDto, requestId);
   }
 }

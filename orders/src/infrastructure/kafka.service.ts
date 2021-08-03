@@ -6,6 +6,7 @@ import {
   OnModuleInit,
 } from '@nestjs/common';
 import { ClientKafka } from '@nestjs/microservices';
+import { Order } from 'src/orders/models/order.model';
 import { KafkaMessageDTO } from './dto/kafka-message.dto';
 
 @Injectable()
@@ -37,6 +38,14 @@ export class KafkaService implements OnModuleInit, OnModuleDestroy {
   }
 
   private sendMessageToTopic(topic: string, data: KafkaMessageDTO<any>) {
+    this.logger.log(
+      `Sending message from Request ID ${data.requestId} to Topic ${topic}.`,
+    );
     this.clientKafka.send(topic, data.stringify()).subscribe();
+  }
+
+  NewOrderPurchased(data: Order, requestId: string) {
+    const message = this.createKafkaMessage(data.toJSON(), requestId);
+    this.sendMessageToTopic(this.topic.NewOrderPurchased, message);
   }
 }
