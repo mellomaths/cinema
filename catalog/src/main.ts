@@ -1,13 +1,16 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { MicroserviceOptions } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { KafkaModule } from './infrastructure/kafka/kafka.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const logger = new Logger('MainModule');
-
+  app.connectMicroservice<MicroserviceOptions>(KafkaModule.config());
   app.useGlobalPipes(new ValidationPipe());
+
+  const logger = new Logger('MainModule');
 
   const config = new DocumentBuilder()
     .setTitle('API Catalog')
@@ -18,6 +21,8 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
+
+  await app.startAllMicroservicesAsync();
   const port = process.env.PORT;
   await app.listen(port);
   logger.log(`Application listening on port ${port}.`);

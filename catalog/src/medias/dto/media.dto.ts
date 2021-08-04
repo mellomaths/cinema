@@ -5,6 +5,7 @@ import {
   IsInt,
   IsNotEmpty,
   IsNumber,
+  IsObject,
   IsString,
 } from 'class-validator';
 
@@ -78,9 +79,19 @@ export class MediaCreateDTO {
   rating: number;
 }
 
+export class MediaMetricsDTO {
+  @IsNumber()
+  @ApiProperty()
+  ordersCount: number;
+}
+
 export class MediaDTO extends MediaCreateDTO {
   @IsNotEmpty()
   @IsString()
   @ApiProperty()
   id: string;
+
+  @IsObject()
+  @ApiProperty()
+  metrics: MediaMetricsDTO;
 }

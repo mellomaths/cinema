@@ -41,4 +41,20 @@ export class MediasService {
     const medias = await this.mediasRepository.find({ type });
     return medias.map((media) => media.toJSON());
   }
+
+  async incrementMediaOrdersCount(mediaId: string, requestId: string) {
+    this.logger.log(
+      `For Request ID ${requestId}. Incrementing Medias Orders Count of media ${mediaId}`,
+    );
+    const media = await this.mediasRepository.findById(mediaId);
+    if (!media) {
+      return;
+    }
+    let { ordersCount } = media.metrics;
+    ordersCount++;
+    await this.mediasRepository.updateOne(
+      { id: mediaId },
+      { metrics: { ordersCount } },
+    );
+  }
 }

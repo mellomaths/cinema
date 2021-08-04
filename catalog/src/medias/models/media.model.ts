@@ -3,6 +3,14 @@ import { Document, Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 import { DynamicModule } from '@nestjs/common';
 
+export class MediaMetrics {
+  ordersCount: number;
+
+  constructor() {
+    this.ordersCount = 0;
+  }
+}
+
 @Schema()
 export class Media extends Document {
   @Prop({ type: mongoose.Schema.Types.ObjectId })
@@ -31,6 +39,9 @@ export class Media extends Document {
 
   @Prop({ required: true })
   rating: number;
+
+  @Prop({ default: new MediaMetrics() })
+  metrics: MediaMetrics;
 }
 
 export const MediaSchema = SchemaFactory.createForClass(Media);
