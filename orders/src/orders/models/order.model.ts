@@ -3,7 +3,7 @@ import { Document, Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 
 @Schema()
-export class Product extends Document {
+export class Media extends Document {
   @Prop({ required: true })
   id: string;
 
@@ -20,7 +20,7 @@ export class Order extends Document {
   customerId: string;
 
   @Prop({ required: true })
-  products: Product[];
+  medias: Media[];
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

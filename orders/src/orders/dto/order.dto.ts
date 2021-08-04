@@ -7,7 +7,7 @@ import {
   IsString,
   ValidateNested,
 } from 'class-validator';
-import { ProductDto } from './product.dto';
+import { MediaDto } from './product.dto';
 
 export class OrderCreateDto {
   @IsNotEmpty()
@@ -19,9 +19,9 @@ export class OrderCreateDto {
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
-  @Type(() => ProductDto)
+  @Type(() => MediaDto)
   @ApiProperty({ isArray: true })
-  products: ProductDto[];
+  medias: MediaDto[];
 }
 
 export class OrderDto extends OrderCreateDto {
