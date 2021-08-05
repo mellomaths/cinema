@@ -2,6 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Model } from 'mongoose';
 import * as mongoose from 'mongoose';
 
+export enum OrderStatus {
+  PURCHASED,
+  PENDING_PAYMENT,
+  APPROVED,
+  REJECTED,
+}
+
 @Schema()
 export class Media extends Document {
   @Prop({ required: true })
@@ -21,6 +28,12 @@ export class Order extends Document {
 
   @Prop({ required: true })
   medias: Media[];
+
+  @Prop({ default: Date.now })
+  purchasedAt: Date;
+
+  @Prop({ default: OrderStatus[OrderStatus.PURCHASED] })
+  status: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);
