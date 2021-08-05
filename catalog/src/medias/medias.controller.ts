@@ -46,8 +46,7 @@ export class MediasController {
   ) {
     this.logger.log('Received payload: ' + JSON.stringify(mediaCreateDTO));
     this.logger.log(`Request ID: ${requestId}.`);
-    await this.mediasService.registerNewMedia(mediaCreateDTO, requestId);
-    return { ok: true };
+    return await this.mediasService.registerNewMedia(mediaCreateDTO, requestId);
   }
 
   @Get(':id')
