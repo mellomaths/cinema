@@ -17,13 +17,14 @@ export class MediasService {
   async registerNewMedia(
     mediaToRegister: MediaCreateDTO,
     requestId: string,
-  ): Promise<void> {
+  ): Promise<MediaDTO> {
     const media = await this.mediasRepository.create(mediaToRegister);
     await media.save();
     this.logger.log(
       `Registering media ${media.title} of type ${media.type} with id=${media._id}`,
     );
     this.kafkaService.NewMediaRegistered(media, requestId);
+    return media.toJSON();
   }
 
   async findMediaById(id: string): Promise<MediaDTO> {
@@ -48,13 +49,16 @@ export class MediasService {
     );
     const media = await this.mediasRepository.findById(mediaId);
     if (!media) {
+      this.logger.error(`Media with id ${mediaId} was not found.`);
       return;
     }
+
     let { ordersCount } = media.metrics;
     ordersCount++;
     await this.mediasRepository.updateOne(
-      { id: mediaId },
+      { _id: mediaId },
       { metrics: { ordersCount } },
     );
+    this.logger.debug(`Media id=${mediaId} successfully updated.`);
   }
 }
