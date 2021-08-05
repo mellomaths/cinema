@@ -20,5 +20,6 @@ export class OrdersService {
     const order = await this.ordersRepository.create(orderToRegister);
     await order.save();
     this.kafkaService.NewOrderPurchased(order, requestId);
+    return order.toJSON();
   }
 }
