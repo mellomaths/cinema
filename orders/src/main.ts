@@ -21,7 +21,7 @@ async function bootstrap() {
   SwaggerModule.setup('docs', app, document);
 
   const port = process.env.PORT;
-  await app.startAllMicroservicesAsync();
+  await app.startAllMicroservices();
   await app.listen(port);
   logger.log(`Application listening on port ${port}.`);
 }

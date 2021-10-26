@@ -7,7 +7,7 @@ import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(process.env.MONGO_URI),
+    MongooseModule.forRoot(process.env.MONGO_URI, { useNewUrlParser: true }),
     MediasModule,
     OrdersModule,
   ],
