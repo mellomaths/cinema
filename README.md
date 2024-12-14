@@ -1,2 +1,3 @@
-# cinema
-Cinema/Movie Theater system exploring Microservices using Nest.js framework and Kafka.
+# Cinema
+
+_Video/Movie streaming app exploring Java Microservices_.
