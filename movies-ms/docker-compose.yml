@@ -1,0 +1,7 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: movies-ms
+      MYSQL_DATABASE: movies-ms

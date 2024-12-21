@@ -1,0 +1,17 @@
+meta {
+  name: GetTitle (Series)
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://www.omdbapi.com/?apiKey={{imdb.api.key}}&t=Breaking Bad&plot=full
+  body: none
+  auth: none
+}
+
+params:query {
+  apiKey: {{imdb.api.key}}
+  t: Breaking Bad
+  plot: full
+}

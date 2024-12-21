@@ -1,0 +1,17 @@
+meta {
+  name: GetTitle (Movie)
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://www.omdbapi.com/?apiKey={{imdb.api.key}}&t=InvalidTitle&plot=full
+  body: none
+  auth: none
+}
+
+params:query {
+  apiKey: {{imdb.api.key}}
+  t: InvalidTitle
+  plot: full
+}
