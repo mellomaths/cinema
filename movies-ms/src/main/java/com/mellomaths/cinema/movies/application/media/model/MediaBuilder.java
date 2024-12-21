@@ -2,22 +2,26 @@ package com.mellomaths.cinema.movies.application.media.model;
 
 import com.mellomaths.cinema.movies.application.imdb.model.IMDBTitle;
 import com.mellomaths.cinema.movies.application.media.model.rating.Rating;
+import com.mellomaths.cinema.movies.infra.logging.json.JSONFileLogger;
 
 import java.util.Arrays;
+import java.util.List;
 
 public class MediaBuilder {
+    private static final JSONFileLogger logger = new JSONFileLogger("media.json");
+
     String title;
     int year;
     String rated;
     String released;
     int runtime;
-    String genre;
-    String director;
-    String writer;
-    String actors;
+    List<Genre> genre;
+    List<Artist> director;
+    List<Artist> writer;
+    List<Artist> actors;
     String plot;
-    String language;
-    String country;
+    List<Language> language;
+    List<Country> country;
     String awards;
     String poster;
     Rating rating;
@@ -46,22 +50,22 @@ public class MediaBuilder {
         return this;
     }
 
-    public MediaBuilder genre(String genre) {
+    public MediaBuilder genres(List<Genre> genre) {
         this.genre = genre;
         return this;
     }
 
-    public MediaBuilder director(String director) {
+    public MediaBuilder directors(List<Artist> director) {
         this.director = director;
         return this;
     }
 
-    public MediaBuilder writer(String writer) {
+    public MediaBuilder writers(List<Artist> writer) {
         this.writer = writer;
         return this;
     }
 
-    public MediaBuilder actors(String actors) {
+    public MediaBuilder actors(List<Artist> actors) {
         this.actors = actors;
         return this;
     }
@@ -71,12 +75,12 @@ public class MediaBuilder {
         return this;
     }
 
-    public MediaBuilder language(String language) {
+    public MediaBuilder languages(List<Language> language) {
         this.language = language;
         return this;
     }
 
-    public MediaBuilder country(String country) {
+    public MediaBuilder countries(List<Country> country) {
         this.country = country;
         return this;
     }
@@ -106,20 +110,22 @@ public class MediaBuilder {
                 .forEach(r -> rating.addReview(r.source(), r.value()));
         rating.addReview("IMDB", imdbTitle.imdbRating());
         rating.addReview("Metascore", imdbTitle.metascore());
-        return new MediaBuilder(imdbTitle.imdbID(), imdbTitle.title(), Integer.parseInt(imdbTitle.year()), imdbTitle.type())
+        var media = new MediaBuilder(imdbTitle.imdbID(), imdbTitle.title(), Integer.parseInt(imdbTitle.year()), imdbTitle.type())
                 .rated(imdbTitle.rated())
                 .released(imdbTitle.released())
                 .runtime(Integer.parseInt(imdbTitle.runtime().split(" ")[0]))
-                .genre(imdbTitle.genre())
-                .director(imdbTitle.director())
-                .writer(imdbTitle.writer())
-                .actors(imdbTitle.actors())
+                .genres(Arrays.stream(imdbTitle.genre().split(",")).map(String::trim).map(Genre::new).toList())
+                .directors(Arrays.stream(imdbTitle.director().split(",")).map(String::trim).map(Artist::new).toList())
+                .writers(Arrays.stream(imdbTitle.writer().split(",")).map(String::trim).map(Artist::new).toList())
+                .actors(Arrays.stream(imdbTitle.actors().split(",")).map(String::trim).map(Artist::new).toList())
                 .plot(imdbTitle.plot())
-                .language(imdbTitle.language())
-                .country(imdbTitle.country())
+                .languages(Arrays.stream(imdbTitle.language().split(",")).map(String::trim).map(Language::new).toList())
+                .countries(Arrays.stream(imdbTitle.country().split(",")).map(String::trim).map(Country::new).toList())
                 .awards(imdbTitle.awards())
                 .poster(imdbTitle.poster())
                 .rating(rating)
                 .build();
+        logger.log(media);
+        return media;
     }
 }
