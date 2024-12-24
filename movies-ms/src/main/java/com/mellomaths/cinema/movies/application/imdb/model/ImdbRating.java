@@ -1,6 +1,6 @@
 package com.mellomaths.cinema.movies.application.imdb.model;
 
-public record IMDBRating(
+public record ImdbRating(
         String source,
         String value
 ) {

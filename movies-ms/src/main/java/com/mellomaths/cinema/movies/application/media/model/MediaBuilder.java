@@ -1,6 +1,6 @@
 package com.mellomaths.cinema.movies.application.media.model;
 
-import com.mellomaths.cinema.movies.application.imdb.model.IMDBTitle;
+import com.mellomaths.cinema.movies.application.imdb.model.ImdbMedia;
 import com.mellomaths.cinema.movies.application.media.model.rating.Rating;
 import com.mellomaths.cinema.movies.infra.logging.json.JSONFileLogger;
 
@@ -104,25 +104,25 @@ public class MediaBuilder {
         return new Media(this);
     }
 
-    public static Media of(IMDBTitle imdbTitle) {
+    public static Media of(ImdbMedia imdbMedia) {
         Rating rating = new Rating();
-        Arrays.stream(imdbTitle.ratings())
+        Arrays.stream(imdbMedia.getRatings())
                 .forEach(r -> rating.addReview(r.source(), r.value()));
-        rating.addReview("IMDB", imdbTitle.imdbRating());
-        rating.addReview("Metascore", imdbTitle.metascore());
-        var media = new MediaBuilder(imdbTitle.imdbID(), imdbTitle.title(), Integer.parseInt(imdbTitle.year()), imdbTitle.type())
-                .rated(imdbTitle.rated())
-                .released(imdbTitle.released())
-                .runtime(Integer.parseInt(imdbTitle.runtime().split(" ")[0]))
-                .genres(Arrays.stream(imdbTitle.genre().split(",")).map(String::trim).map(Genre::new).toList())
-                .directors(Arrays.stream(imdbTitle.director().split(",")).map(String::trim).map(Artist::new).toList())
-                .writers(Arrays.stream(imdbTitle.writer().split(",")).map(String::trim).map(Artist::new).toList())
-                .actors(Arrays.stream(imdbTitle.actors().split(",")).map(String::trim).map(Artist::new).toList())
-                .plot(imdbTitle.plot())
-                .languages(Arrays.stream(imdbTitle.language().split(",")).map(String::trim).map(Language::new).toList())
-                .countries(Arrays.stream(imdbTitle.country().split(",")).map(String::trim).map(Country::new).toList())
-                .awards(imdbTitle.awards())
-                .poster(imdbTitle.poster())
+        rating.addReview("IMDB", imdbMedia.getImdbRating());
+        rating.addReview("Metascore", imdbMedia.getMetascore());
+        var media = new MediaBuilder(imdbMedia.getImdbID(), imdbMedia.getTitle(), Integer.parseInt(imdbMedia.getYear()), imdbMedia.getType())
+                .rated(imdbMedia.getRated())
+                .released(imdbMedia.getReleased())
+                .runtime(Integer.parseInt(imdbMedia.getRuntime().split(" ")[0]))
+                .genres(Arrays.stream(imdbMedia.getGenre().split(",")).map(String::trim).map(Genre::new).toList())
+                .directors(Arrays.stream(imdbMedia.getDirector().split(",")).map(String::trim).map(Artist::new).toList())
+                .writers(Arrays.stream(imdbMedia.getWriter().split(",")).map(String::trim).map(Artist::new).toList())
+                .actors(Arrays.stream(imdbMedia.getActors().split(",")).map(String::trim).map(Artist::new).toList())
+                .plot(imdbMedia.getPlot())
+                .languages(Arrays.stream(imdbMedia.getLanguage().split(",")).map(String::trim).map(Language::new).toList())
+                .countries(Arrays.stream(imdbMedia.getCountry().split(",")).map(String::trim).map(Country::new).toList())
+                .awards(imdbMedia.getAwards())
+                .poster(imdbMedia.getPoster())
                 .rating(rating)
                 .build();
         logger.log(media);
