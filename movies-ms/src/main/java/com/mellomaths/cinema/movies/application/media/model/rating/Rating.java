@@ -1,6 +1,6 @@
 package com.mellomaths.cinema.movies.application.media.model.rating;
 
-import com.mellomaths.cinema.movies.application.utils.MathUtils;
+import com.mellomaths.cinema.movies.application.core.utils.math.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;

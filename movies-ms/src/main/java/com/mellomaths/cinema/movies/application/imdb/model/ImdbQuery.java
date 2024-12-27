@@ -1,6 +1,6 @@
 package com.mellomaths.cinema.movies.application.imdb.model;
 
-import com.mellomaths.cinema.movies.application.utils.UrlUtils;
+import com.mellomaths.cinema.movies.application.core.utils.url.UrlUtils;
 
 public class ImdbQuery {
 

@@ -1,4 +1,4 @@
-package com.mellomaths.cinema.movies.application.utils;
+package com.mellomaths.cinema.movies.application.core.utils.url;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;

@@ -1,5 +1,7 @@
 package com.mellomaths.cinema.movies.application.imdb.model;
 
+import com.mellomaths.cinema.movies.application.imdb.exception.ImdbMediaNotFoundException;
+
 public class ImdbResponse {
 
     private final String response;
@@ -16,6 +18,13 @@ public class ImdbResponse {
 
     public static ImdbResponse of(ImdbSeason imdbSeason) {
         return new ImdbResponse(imdbSeason.getResponse(), imdbSeason.getError());
+    }
+
+    public boolean validate() throws ImdbMediaNotFoundException {
+        if (isNotFound()) {
+            throw new ImdbMediaNotFoundException("not found");
+        }
+        return isSuccess();
     }
 
     public boolean isSuccess() {
